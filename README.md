@@ -1,535 +1,476 @@
 # Caronas ICEA
 
-Aplicativo Android de caronas para estudantes do ICEA/UFOP. O objetivo é conectar
-motoristas e passageiros que tenham rotas e horários compatíveis, oferecendo uma
-alternativa de transporte econômica, sustentável e segura.
+> Para preparar os dados, testar todos os fluxos e apresentar o trabalho, consulte o
+> [Roteiro de testes e apresentação](./ROTEIRO_TESTES_APRESENTACAO.md).
 
-> Projeto acadêmico da disciplina: **[preencher nome da disciplina]**  
-> Professor(a): **[preencher nome]**  
-> Aluno(a) 1: **[preencher nome e matrícula]**  
-> Aluno(a) 2: **[preencher nome e matrícula, se houver]**
+Aplicativo móvel de caronas voltado à comunidade do ICEA/UFOP. O sistema aproxima
+motoristas e passageiros que possuem rotas e horários compatíveis, oferecendo uma
+alternativa de transporte mais econômica, sustentável e segura.
 
-## Situação atual
+O projeto foi desenvolvido em **React Native com Expo**, usa **Firebase
+Authentication** para acesso e **Cloud Firestore** para persistência e sincronização
+dos dados. O Android é a plataforma principal do trabalho.
 
-Este repositório contém um protótipo inicial criado com React Native e Expo. A tela
-atual ainda é apenas um exemplo e será substituída gradualmente pelas telas descritas
-neste documento.
+## Identificação do trabalho
 
-## Tecnologias escolhidas
+> **Importante:** preencha os dados abaixo antes de enviar o código no Moodle.
 
-- **React Native:** criação das telas do aplicativo Android.
-- **Expo:** facilita a execução no celular e evita configuração nativa no início.
-- **JavaScript:** linguagem já usada no projeto atual.
-- **React Navigation:** navegação entre as telas.
-- **Firebase Authentication:** cadastro e login por e-mail e senha.
-- **Cloud Firestore:** banco de dados de usuários, caronas, reservas, avaliações e
-  denúncias.
-- **Firebase Storage:** fotos de perfil, caso esse recurso seja implementado.
-- **Firebase Security Rules:** controle de quem pode ler e alterar cada informação.
+- Aluno(a) 1: **[nome completo e matrícula]**
+- Aluno(a) 2: **[nome completo e matrícula, se houver]**
+- Disciplina: **[nome da disciplina]**
+- Professor(a): **[nome do professor ou professora]**
 
-Para este trabalho, o caminho mais simples é continuar com o **Expo Managed
-Workflow** e usar o SDK JavaScript do Firebase. Não é necessário começar criando
-código Android nativo.
+Os nomes dos integrantes também podem ser adicionados à tela **Sobre**, no componente
+`AboutScreen` do arquivo `src/screens/MainScreens.js`.
 
-## Escopo da primeira versão (MVP)
+## Objetivo
 
-O MVP é a menor versão que atende ao objetivo principal e pode ser apresentada.
+O Caronas ICEA permite que membros da comunidade acadêmica:
 
-### Funcionalidades obrigatórias
+- criem uma conta usando um e-mail institucional da UFOP;
+- utilizem o aplicativo como passageiro, motorista ou nos dois perfis;
+- publiquem e pesquisem caronas;
+- solicitem e confirmem vagas;
+- acompanhem suas viagens e solicitações;
+- avaliem outros usuários após uma viagem;
+- registrem denúncias para análise administrativa.
 
-- Cadastro com nome, e-mail institucional, senha e tipo de perfil.
-- Login e logout.
-- Perfil de motorista, passageiro ou ambos.
-- Publicação de carona com origem, destino, data, horário, vagas, preço e regras.
-- Listagem e busca de caronas disponíveis.
-- Solicitação de reserva por um passageiro.
-- Aceite ou recusa da solicitação pelo motorista.
-- Cancelamento de uma carona ou reserva.
+O cadastro comum não permite escolher o perfil de administrador. Essa permissão é
+atribuída manualmente no Console do Firebase para impedir que um usuário comum
+transforme a própria conta em administradora.
+
+## Funcionalidades implementadas
+
+### Acesso e cadastro
+
+- Tela de apresentação do aplicativo.
+- Login com e-mail e senha.
+- Cadastro com nome, e-mail, senha e tipo de perfil.
+- Validação dos domínios `@ufop.edu.br` e `@aluno.ufop.edu.br`.
+- Validação de campos obrigatórios, tamanho da senha e confirmação da senha.
+- Bloqueio de acesso para usuários marcados como bloqueados pelo administrador.
+
+### Passageiro
+
+- Busca por origem e destino.
+- Consulta das caronas disponíveis.
+- Visualização da rota, motorista, avaliação, veículo, preço, regras e vagas.
+- Solicitação de uma vaga.
+- Acompanhamento do estado da reserva.
+- Avaliação por estrelas em uma viagem concluída.
+- Envio de denúncia sobre um motorista.
+
+### Motorista
+
+- Publicação de carona com origem, destino, data, horário, quantidade de vagas,
+  preço, veículo e regras.
+- Visualização das caronas publicadas.
+- Aceite ou recusa de solicitações de passageiros.
+- Atualização automática das vagas após o aceite.
+- Cancelamento de carona e das reservas relacionadas.
 - Marcação da viagem como concluída.
-- Avaliação de 1 a 5 estrelas após a conclusão.
-- Denúncia de usuário ou viagem.
-- Área administrativa simples para consultar denúncias e bloquear perfis.
-- Tela **Sobre** com os nomes dos integrantes.
 
-### Melhorias opcionais
+### Administrador
 
-Estas funcionalidades só devem ser iniciadas depois que o MVP estiver funcionando:
+- Acesso a uma área administrativa exclusiva.
+- Listagem das denúncias recebidas.
+- Marcação de denúncias como resolvidas.
+- Listagem dos usuários.
+- Bloqueio e desbloqueio de contas comuns.
 
-- Foto de perfil.
-- Mapa, geolocalização e cálculo de distância.
-- Chat em tempo real.
-- Notificações push.
-- Pagamento dentro do aplicativo.
-- Histórico avançado e filtros por preço/local.
+### Interface
 
-No MVP, origem e destino podem ser campos de texto, e o pagamento pode ser combinado
-fora do app. Isso reduz bastante a complexidade sem prejudicar o fluxo principal.
+- Navegação inferior entre Início, Buscar, Oferecer, Viagens e Perfil.
+- Layout adaptável a diferentes larguras de tela.
+- Componentes reutilizáveis e identidade visual consistente.
+- Mensagens de erro, sucesso, confirmação e estados vazios.
+- Áreas de toque e contraste adequados para dispositivos móveis.
 
-## Perfis e permissões
+## Tecnologias utilizadas
 
-| Perfil | Permissões principais |
+| Tecnologia | Finalidade |
 | --- | --- |
-| Passageiro | Buscar caronas, solicitar vaga, cancelar reserva, avaliar e denunciar |
-| Motorista | Publicar/editar/cancelar carona, aceitar passageiros, concluir viagem, avaliar e denunciar |
-| Ambos | Possui as permissões de passageiro e motorista |
-| Administrador | Analisar denúncias, bloquear usuários e consultar dados necessários à moderação |
+| React 19 | Componentes e gerenciamento de estado |
+| React Native 0.81 | Construção da interface móvel |
+| Expo SDK 54 | Execução, desenvolvimento e empacotamento do projeto |
+| Expo Status Bar | Controle visual da barra de status |
+| Expo Vector Icons | Ícones utilizados na interface |
+| Firebase Authentication | Cadastro, login e persistência da sessão |
+| Cloud Firestore | Banco de dados e atualizações em tempo real |
+| AsyncStorage | Persistência da sessão no React Native |
+| JavaScript | Linguagem principal do projeto |
 
-O usuário não deve poder escolher o perfil de administrador durante o cadastro. Essa
-permissão deve ser atribuída manualmente no banco para a conta do professor ou da
-equipe responsável.
+## Pré-requisitos
 
-## Requisitos não funcionais
+Para executar o projeto, instale:
 
-- Funcionar em Android e adaptar-se a diferentes tamanhos de tela.
-- Exibir mensagens de carregamento, sucesso e erro.
-- Validar os campos antes de enviá-los ao Firebase.
-- Aceitar apenas o domínio institucional definido para o projeto, por exemplo
-  `@aluno.ufop.edu.br` e/ou `@ufop.edu.br`. Confirmar com o professor quais domínios
-  serão aceitos.
-- Armazenar senhas somente no Firebase Authentication, nunca no Firestore.
-- Proteger dados usando regras do Firestore; esconder botões na interface não é uma
-  proteção suficiente.
-- Não salvar chaves privadas ou contas de serviço no Git.
-- Manter textos legíveis, botões com área de toque adequada e contraste suficiente.
-- Informar ao usuário quais dados são armazenados e coletar apenas o necessário.
+- Node.js 20, 22 ou 24 LTS;
+- npm;
+- Expo Go em um celular Android, ou um emulador Android configurado;
+- Git, caso o projeto seja obtido por clonagem.
 
-## Fluxo principal do aplicativo
-
-1. O usuário abre o app e cria uma conta com e-mail institucional.
-2. Após o login, completa seu perfil e escolhe motorista, passageiro ou ambos.
-3. O motorista publica uma carona.
-4. O passageiro pesquisa uma rota e solicita uma vaga.
-5. O motorista aceita ou recusa a solicitação.
-6. Quando aceita, a reserva fica confirmada e uma vaga é ocupada.
-7. Depois da viagem, o motorista a marca como concluída.
-8. Motorista e passageiro podem avaliar um ao outro.
-9. Em caso de problema, o usuário registra uma denúncia para o administrador.
-
-## Telas planejadas
-
-### Acesso
-
-- Login
-- Cadastro
-- Recuperação de senha
-
-### Área autenticada
-
-- Início
-- Buscar caronas
-- Detalhes da carona
-- Publicar/editar carona
-- Minhas viagens
-- Solicitações recebidas (motorista)
-- Perfil
-- Avaliação
-- Denúncia
-- Sobre
-
-### Administração
-
-- Lista de denúncias
-- Detalhes da denúncia
-- Lista de usuários e ação de bloquear/desbloquear
-
-## Estrutura de pastas proposta
-
-```text
-appcarona/
-├── assets/                 # Imagens e ícones
-├── src/
-│   ├── components/         # Botões, campos e cartões reutilizáveis
-│   ├── config/
-│   │   └── firebase.js     # Inicialização do Firebase
-│   ├── contexts/           # Estado global de autenticação
-│   ├── navigation/         # Rotas públicas, privadas e administrativas
-│   ├── screens/
-│   │   ├── auth/           # Login, cadastro e recuperação de senha
-│   │   ├── rides/          # Busca, detalhes e publicação de caronas
-│   │   ├── bookings/       # Reservas e solicitações
-│   │   ├── profile/        # Perfil, avaliações e Sobre
-│   │   └── admin/          # Moderação
-│   ├── services/           # Funções que acessam o Firebase
-│   ├── utils/              # Validações e formatação de datas/valores
-│   └── theme/              # Cores, espaçamentos e tipografia
-├── .env.example            # Nomes das configurações, sem valores privados
-├── .gitignore
-├── App.js
-├── app.json
-├── firestore.rules
-├── firestore.indexes.json
-└── package.json
-```
-
-Não é necessário criar tudo de uma vez. Cada pasta deve ser adicionada quando a
-primeira funcionalidade correspondente for implementada.
-
-## Modelo de dados no Firestore
-
-O Firestore organiza os dados em coleções e documentos. Uma sugestão inicial é:
-
-### `users/{userId}`
-
-```js
-{
-  name: "Nome do aluno",
-  email: "aluno@ufop.edu.br",
-  roles: ["passenger", "driver"],
-  isAdmin: false,
-  isBlocked: false,
-  ratingAverage: 4.8,
-  ratingCount: 5,
-  createdAt: Timestamp
-}
-```
-
-O ID do documento deve ser o mesmo `uid` criado pelo Firebase Authentication.
-
-### `rides/{rideId}`
-
-```js
-{
-  driverId: "uid-do-motorista",
-  origin: "Bairro A",
-  destination: "ICEA/UFOP",
-  departureAt: Timestamp,
-  seatsTotal: 3,
-  seatsAvailable: 2,
-  price: 5.00,
-  rules: "Não fumar no veículo",
-  status: "open", // open, full, completed ou cancelled
-  createdAt: Timestamp,
-  updatedAt: Timestamp
-}
-```
-
-### `bookings/{bookingId}`
-
-```js
-{
-  rideId: "id-da-carona",
-  driverId: "uid-do-motorista",
-  passengerId: "uid-do-passageiro",
-  status: "pending", // pending, accepted, rejected ou cancelled
-  createdAt: Timestamp,
-  updatedAt: Timestamp
-}
-```
-
-### `reviews/{reviewId}`
-
-```js
-{
-  rideId: "id-da-carona",
-  authorId: "quem-avaliou",
-  targetUserId: "quem-foi-avaliado",
-  rating: 5,
-  comment: "Viagem tranquila",
-  createdAt: Timestamp
-}
-```
-
-### `reports/{reportId}`
-
-```js
-{
-  authorId: "quem-denunciou",
-  reportedUserId: "usuario-denunciado",
-  rideId: "id-da-carona-ou-null",
-  reason: "Descrição do problema",
-  status: "open", // open, reviewing ou resolved
-  adminNotes: "",
-  createdAt: Timestamp,
-  resolvedAt: null
-}
-```
-
-Datas devem ser salvas como `Timestamp` do Firebase, e não como texto. Valores como
-`createdAt` e `updatedAt` devem usar o horário do servidor (`serverTimestamp()`).
-
-## Preparação do ambiente
-
-### 1. Instalar as ferramentas
-
-Instale:
-
-- Node.js na versão LTS;
-- Git;
-- VS Code ou outro editor;
-- aplicativo **Expo Go** em um celular Android conectado à mesma rede do computador.
-
-Confirme a instalação no terminal:
+Para conferir as versões instaladas:
 
 ```bash
 node --version
 npm --version
-git --version
 ```
 
-### 2. Baixar e executar este projeto
+## Instalação
+
+No terminal, entre na pasta do projeto e instale as dependências:
 
 ```bash
-git clone URL_DO_REPOSITORIO
 cd appcarona
 npm install
-npx expo start
 ```
 
-Leia o QR Code exibido no terminal usando o Expo Go. Se a rede não permitir a
-conexão, tente:
+## Configuração obrigatória do Firebase
+
+O aplicativo já está conectado ao projeto Firebase `appcarona-973b6`. A configuração
+do SDK está em `src/config/firebaseConfig.js`. A chave `apiKey` de um aplicativo
+cliente identifica o projeto e não substitui as regras de segurança; arquivos de
+conta de serviço e chaves privadas nunca devem ser adicionados ao repositório.
+
+Antes de criar a primeira conta, conclua estas etapas no Console do Firebase:
+
+### 1. Ativar autenticação por e-mail e senha
+
+1. Abra o projeto `appcarona-973b6` no Console do Firebase.
+2. Acesse **Criação > Authentication**.
+3. Clique em **Vamos começar**.
+4. Abra a aba **Método de login**.
+5. Selecione **E-mail/senha**, ative a primeira opção e salve.
+
+### 2. Criar o Cloud Firestore
+
+1. Acesse **Criação > Firestore Database**.
+2. Clique em **Criar banco de dados**.
+3. Escolha uma localização próxima dos usuários.
+4. Finalize a criação do banco.
+
+### 3. Publicar as regras de segurança
+
+Os arquivos `firebase.json`, `.firebaserc`, `firestore.rules` e
+`firestore.indexes.json` já estão configurados. Para publicar as regras:
+
+```bash
+npx firebase-tools login
+npx firebase-tools deploy --only firestore
+```
+
+Também é possível copiar o conteúdo de `firestore.rules` para a aba **Regras** do
+Firestore no Console e clicar em **Publicar**.
+
+Sem essas três configurações, o aplicativo exibirá uma mensagem informando que a
+operação não foi permitida ou que o banco ainda não existe.
+
+## Iniciar o aplicativo
+
+Depois, inicie o servidor de desenvolvimento:
+
+```bash
+npm start
+```
+
+O Expo exibirá um QR Code no terminal.
+
+### Executar em um celular Android
+
+1. Instale e abra o Expo Go no celular.
+2. Mantenha o computador e o celular conectados à mesma rede.
+3. Execute `npm start` no computador.
+4. Leia o QR Code exibido pelo Expo.
+5. Aguarde o carregamento do aplicativo.
+
+Se a rede local impedir a conexão, tente iniciar o Expo em modo túnel:
 
 ```bash
 npx expo start --tunnel
 ```
 
-Também é possível usar um emulador Android, mas o celular com Expo Go costuma ser o
-caminho mais simples para começar.
+### Executar em um emulador Android
 
-### 3. Instalar as bibliotecas necessárias
-
-Execute apenas quando começar a implementar as respectivas funcionalidades:
+Com um emulador já aberto e configurado:
 
 ```bash
-npm install firebase
-npm install @react-navigation/native @react-navigation/native-stack @react-navigation/bottom-tabs
-npx expo install react-native-screens react-native-safe-area-context
+npm run android
 ```
 
-Sempre reinicie o Expo depois de instalar dependências. Se houver problema de cache:
+Também é possível iniciar com `npm start` e pressionar `a` no terminal.
+
+### Executar no navegador
+
+O navegador é útil para uma verificação rápida da interface, embora a plataforma
+principal do trabalho seja Android:
+
+```bash
+npm run web
+```
+
+### Validar o bundle
+
+Para verificar se o código pode ser empacotado sem erros de compilação:
+
+```bash
+npx expo export --platform android
+```
+
+Esse comando gera um bundle de produção, mas não gera sozinho um arquivo APK.
+
+## Preparar contas para a apresentação
+
+As contas agora são reais e ficam no Firebase Authentication. Cadastre pelo próprio
+aplicativo:
+
+| Uso | E-mail sugerido | Perfil escolhido |
+| --- | --- | --- |
+| Passageiro | um e-mail institucional disponível | Passageiro |
+| Motorista | outro e-mail institucional disponível | Motorista |
+| Administrador | `admin@ufop.edu.br` | Ambos |
+
+Use senhas com pelo menos seis caracteres. Para demonstrar a troca de solicitações,
+é necessário usar duas contas diferentes, pois um motorista não pode reservar a
+própria carona.
+
+Para preparar o administrador, cadastre `admin@ufop.edu.br` uma única vez pelo
+aplicativo. Depois abra **Firestore Database > Dados > users**, localize o documento
+da conta e altere `isAdmin` de `false` para `true`. Saia e entre novamente no app para
+exibir o painel administrativo. Guarde a senha escolhida e não a publique no README
+ou no repositório.
+
+## Como utilizar
+
+### Criar uma conta
+
+1. Na tela inicial, toque em **Criar minha conta**.
+2. Informe o nome completo e um e-mail institucional válido.
+3. Escolha Passageiro, Motorista ou Ambos.
+4. Informe e confirme uma senha com pelo menos seis caracteres.
+5. Toque em **Criar conta**.
+
+A nova conta é criada no Firebase Authentication, seu perfil é salvo na coleção
+`users` e a sessão permanece ativa no dispositivo.
+
+### Buscar e reservar uma carona
+
+1. Acesse a aba **Buscar**.
+2. Preencha a origem e/ou o destino para filtrar os resultados.
+3. Toque em uma carona para consultar os detalhes.
+4. Toque em **Solicitar uma vaga**.
+5. A reserva aparecerá em **Viagens > Reservas** como pendente.
+
+### Publicar uma carona
+
+1. Acesse a aba **Oferecer**.
+2. Preencha a rota, a data, o horário e os detalhes da viagem.
+3. Toque em **Publicar carona**.
+4. Consulte a publicação em **Viagens > Minhas caronas**.
+
+### Responder a uma solicitação
+
+1. Acesse **Viagens > Solicitações**.
+2. Toque em **Aceitar** ou **Recusar**.
+3. Quando aceita, a reserva é confirmada e uma vaga é descontada da carona.
+
+### Avaliar uma viagem
+
+1. Acesse **Viagens > Reservas**.
+2. Abra uma reserva cuja viagem tenha sido marcada como concluída pelo motorista.
+3. Toque em **Avaliar motorista**.
+4. Selecione de uma a cinco estrelas e envie a avaliação.
+
+### Enviar e administrar uma denúncia
+
+1. Abra os detalhes de uma carona.
+2. Toque no ícone de alerta no canto superior direito.
+3. Escolha o motivo, descreva o ocorrido e envie.
+4. Entre com a conta administrativa.
+5. Acesse **Perfil > Painel administrativo** para resolver a denúncia.
+
+## Fluxo geral do sistema
+
+```text
+Cadastro ou login
+       │
+       ├── Passageiro ──> Buscar carona ──> Solicitar vaga ──> Aguardar resposta
+       │                                                    │
+       │                                                    └──> Viajar e avaliar
+       │
+       ├── Motorista ───> Publicar carona ─> Analisar solicitação
+       │                                      │
+       │                                      ├──> Aceitar ou recusar
+       │                                      └──> Concluir viagem
+       │
+       └── Administrador ─> Analisar denúncias e gerenciar bloqueios
+```
+
+## Organização do projeto
+
+```text
+appcarona/
+├── App.js                         # Estado global e controle da navegação
+├── index.js                       # Registro do componente principal no Expo
+├── app.json                       # Metadados e configurações do aplicativo
+├── package.json                   # Dependências e comandos npm
+├── firebase.json                  # Configuração de deploy do Firebase
+├── firestore.rules                # Regras de autorização do Firestore
+├── firestore.indexes.json         # Índices do Firestore
+├── assets/                        # Ícones e imagens
+└── src/
+    ├── components/
+    │   └── ui.js                  # Botões, campos, cabeçalhos e cartões
+    ├── config/                     # Inicialização web e nativa do Firebase
+    ├── services/                   # Authentication e operações do Firestore
+    ├── screens/
+    │   ├── AuthScreens.js         # Apresentação, login e cadastro
+    │   └── MainScreens.js         # Telas da área autenticada
+    ├── theme/                     # Cores, tipografia, raios e espaçamentos
+    └── utils/
+        └── validators.js          # Validação de login e cadastro
+```
+
+### Responsabilidade dos arquivos principais
+
+- `App.js`: observa a autenticação e os dados em tempo real, executa as operações e
+  decide qual tela deve ser exibida.
+- `src/config/firebase.native.js`: inicializa o Firebase no Android com persistência
+  da sessão por AsyncStorage.
+- `src/config/firebase.web.js`: inicializa o Firebase no navegador.
+- `src/services/authService.js`: cadastro, login, logout e perfil do usuário.
+- `src/services/firestoreService.js`: operações de caronas, reservas, avaliações,
+  denúncias e administração.
+- `src/screens/AuthScreens.js`: reúne os fluxos que não exigem autenticação.
+- `src/screens/MainScreens.js`: contém os fluxos do passageiro, motorista,
+  administrador, perfil e Sobre.
+- `src/components/ui.js`: fornece os elementos visuais reutilizados pelas telas.
+- `src/theme/`: centraliza a identidade visual e evita valores repetidos.
+
+## Modelo de dados no Firestore
+
+Cada entidade é armazenada em uma coleção do Cloud Firestore. Os documentos usam o
+UID fornecido pelo Firebase Authentication para relacionar as ações ao usuário.
+
+Além das coleções funcionais abaixo, a tela inicial executa a consulta acadêmica
+solicitada sobre a coleção `Usuarios`. Cada documento dessa coleção deve possuir o
+campo `Email`, respeitando exatamente o `E` maiúsculo. O resultado mostra o ID do
+documento e o endereço na lista **Usuários do Firestore**.
+
+A coleção `Usuarios` possui leitura pública nas regras porque a atividade exige a
+consulta assim que o app abre, antes do login. Ela deve conter somente dados de teste;
+para um aplicativo real, remova essa exceção e exija autenticação.
+
+| Entidade | Informações principais |
+| --- | --- |
+| Usuário | nome, e-mail, perfis, avaliação e bloqueio |
+| Carona | motorista, rota, data, horário, vagas, preço, regras e estado |
+| Reserva | carona, motorista, passageiro e estado da solicitação |
+| Avaliação | avaliador, avaliado, viagem, estrelas e comentário |
+| Denúncia | denunciante, denunciado, motivo, descrição e estado da análise |
+
+Estados de uma carona: `open`, `completed` ou `cancelled`.
+
+Estados de uma reserva: `pending`, `accepted`, `rejected` ou `cancelled`.
+
+As senhas não são armazenadas no Firestore: elas são tratadas exclusivamente pelo
+Firebase Authentication.
+
+## Requisitos do trabalho atendidos
+
+| Requisito | Implementação |
+| --- | --- |
+| React Native | Interface construída com React Native e Expo |
+| Android | Execução e bundle Android validados |
+| Interface responsiva | Conteúdo flexível, rolável e com largura máxima |
+| Cadastro institucional | Validação dos domínios de e-mail da UFOP |
+| Perfis de usuário | Passageiro, motorista, ambos e administrador |
+| Publicar carona | Formulário completo na aba Oferecer |
+| Buscar carona | Filtros de origem e destino |
+| Negociar e confirmar | Solicitação, aceite e recusa de vaga |
+| Avaliações | Avaliação de uma a cinco estrelas após conclusão |
+| Administração | Denúncias e bloqueio de usuários |
+
+## Roteiro sugerido para apresentação
+
+1. Apresente a tela inicial e explique o objetivo do aplicativo.
+2. Mostre o cadastro e a validação do e-mail institucional.
+3. Entre com a conta de motorista preparada anteriormente.
+4. Publique uma nova carona na aba **Oferecer** e depois saia.
+5. Entre com a conta de passageiro, busque a carona e solicite uma vaga.
+6. Volte à conta de motorista e aceite em **Viagens > Solicitações**.
+7. Em **Viagens > Minhas caronas**, marque a viagem como concluída.
+8. Volte à conta de passageiro, abra a reserva concluída e faça uma avaliação.
+9. Abra uma carona e envie uma denúncia.
+10. Entre com a conta `admin@ufop.edu.br` para demonstrar a moderação.
+11. Finalize mostrando o perfil e a tela Sobre.
+
+## Limitações desta versão
+
+- A média das avaliações ainda não é recalculada automaticamente no perfil.
+- O protótipo não possui mapa, GPS, chat ou notificações push.
+- O pagamento é combinado fora do aplicativo.
+- Não há recuperação real de senha.
+- A validação institucional verifica o domínio do endereço, mas o envio de e-mail de
+  confirmação ainda não foi implementado.
+
+## Evolução para uma versão real
+
+Para transformar o MVP em um aplicativo de produção, recomenda-se:
+
+1. implementar confirmação de e-mail e recuperação de senha;
+2. calcular médias de avaliações com uma Cloud Function;
+3. substituir o campo `isAdmin` por custom claims atribuídas no servidor;
+4. configurar notificações para solicitações e respostas;
+5. adicionar geolocalização e mapas;
+6. incluir testes automatizados e tratamento avançado de falhas de rede;
+7. configurar App Check e proteção contra abuso;
+8. gerar uma versão Android assinada para distribuição.
+
+As regras em `firestore.rules` protegem as operações do cliente. A interface não
+substitui essas regras: toda autorização relevante precisa continuar sendo validada
+pelo Firebase.
+
+## Solução de problemas
+
+### O QR Code não abre o aplicativo
+
+- Confirme que o celular e o computador estão na mesma rede.
+- Desative temporariamente VPNs que bloqueiem a conexão local.
+- Tente `npx expo start --tunnel`.
+
+### Alterações não aparecem
+
+Limpe o cache do Expo:
 
 ```bash
 npx expo start --clear
 ```
 
-## Configuração do Firebase
+### Dependências com erro
 
-1. Acesse o Console do Firebase e crie um projeto, por exemplo `caronas-icea`.
-2. Adicione um **aplicativo Web** ao projeto. O SDK Web funciona no projeto Expo.
-3. Em **Authentication > Sign-in method**, habilite **E-mail/senha**.
-4. Em **Firestore Database**, crie o banco. O modo de teste serve apenas para o
-   primeiro experimento; antes da entrega, publique regras restritivas.
-5. Copie a configuração fornecida pelo Firebase.
-6. Crie um arquivo `.env` na raiz a partir deste modelo:
-
-```env
-EXPO_PUBLIC_FIREBASE_API_KEY=
-EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=
-EXPO_PUBLIC_FIREBASE_PROJECT_ID=
-EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=
-EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
-EXPO_PUBLIC_FIREBASE_APP_ID=
-```
-
-7. Crie `src/config/firebase.js` para ler essas variáveis e inicializar `app`, `auth`
-   e `db`.
-8. Crie também um `.env.example` vazio com os mesmos nomes para documentar a
-   configuração para a dupla.
-
-O arquivo `.env` e possíveis credenciais administrativas já estão previstos no
-`.gitignore`. As configurações públicas do app Firebase não substituem as regras de
-segurança: a proteção real deve estar no Authentication e nas Security Rules. Nunca
-use uma chave de **service account** dentro do aplicativo.
-
-## Regras de segurança que precisam ser implementadas
-
-Antes da apresentação, as regras do Firestore devem garantir pelo menos que:
-
-- apenas usuários autenticados acessam os dados do app;
-- um usuário altera somente o próprio perfil e não pode se tornar administrador;
-- um usuário bloqueado não publica nem solicita caronas;
-- somente motoristas criam caronas em seu próprio nome;
-- somente o autor edita uma carona, exceto ações administrativas;
-- somente o passageiro cria uma reserva para si próprio;
-- somente o motorista da carona aceita ou rejeita uma solicitação;
-- uma avaliação só pode ser criada por participante de uma viagem concluída;
-- cada participante avalia a outra pessoa no máximo uma vez por viagem;
-- somente administradores leem todas as denúncias e alteram o estado delas.
-
-Atualizar `seatsAvailable` e aceitar uma reserva são operações relacionadas. Para
-evitar duas pessoas ocupando a última vaga ao mesmo tempo, essa alteração deve usar
-uma **transação do Firestore**.
-
-## Plano de desenvolvimento para iniciantes
-
-### Etapa 0 — Entender o básico
-
-- [ ] Executar o app atual no celular.
-- [ ] Aprender os conceitos de componente, propriedade (`prop`), estado (`useState`)
-  e efeito (`useEffect`).
-- [ ] Fazer uma alteração pequena em `App.js` e confirmar que ela aparece no celular.
-- [ ] Criar o repositório Git e fazer commits pequenos e descritivos.
-
-**Resultado esperado:** o ambiente funciona e a equipe sabe alterar uma tela.
-
-### Etapa 1 — Navegação e identidade visual
-
-- [ ] Definir cores, nome e ícone do projeto.
-- [ ] Instalar o React Navigation.
-- [ ] Criar navegação de acesso (Login/Cadastro).
-- [ ] Criar abas da área autenticada (Início, Buscar/Publicar, Viagens e Perfil).
-- [ ] Criar componentes básicos de botão, campo de texto e estado de carregamento.
-- [ ] Atualizar a tela Sobre com os integrantes.
-
-**Resultado esperado:** todas as telas vazias podem ser abertas sem erro.
-
-### Etapa 2 — Firebase e autenticação
-
-- [ ] Criar e configurar o projeto Firebase.
-- [ ] Inicializar o Firebase usando variáveis de ambiente.
-- [ ] Implementar cadastro com e-mail e senha.
-- [ ] Validar o domínio institucional.
-- [ ] Criar o documento em `users` após o cadastro.
-- [ ] Implementar login, logout e recuperação de senha.
-- [ ] Criar um contexto de autenticação e proteger as telas internas.
-- [ ] Tratar conta bloqueada.
-
-**Resultado esperado:** cada integrante consegue criar uma conta, entrar, fechar o
-app e continuar autenticado ao abrir novamente.
-
-### Etapa 3 — Perfis
-
-- [ ] Exibir os dados do usuário autenticado.
-- [ ] Permitir editar nome e papéis (motorista/passageiro/ambos).
-- [ ] Mostrar média e quantidade de avaliações.
-- [ ] Validar todos os campos e exibir mensagens claras.
-
-**Resultado esperado:** o perfil é salvo no Firestore e reaparece após reiniciar.
-
-### Etapa 4 — Publicação e busca de caronas
-
-- [ ] Criar formulário de carona.
-- [ ] Usar seletor de data/hora e salvar como `Timestamp`.
-- [ ] Listar caronas futuras com status `open` e vagas disponíveis.
-- [ ] Mostrar detalhes da carona e dados públicos do motorista.
-- [ ] Permitir ao motorista editar ou cancelar sua publicação.
-- [ ] Criar os índices solicitados pelo Firestore durante as consultas.
-
-**Resultado esperado:** uma conta publica e outra conta encontra a carona.
-
-### Etapa 5 — Reservas e confirmação
-
-- [ ] Criar solicitação com status `pending`.
-- [ ] Impedir reserva duplicada e reserva na própria carona.
-- [ ] Listar solicitações para o motorista.
-- [ ] Implementar aceitar/recusar.
-- [ ] Ao aceitar, usar transação para reduzir as vagas.
-- [ ] Implementar cancelamento e devolução da vaga quando aplicável.
-- [ ] Exibir viagens oferecidas e reservadas em “Minhas viagens”.
-
-**Resultado esperado:** o fluxo passageiro → solicitação → aceite funciona com duas
-contas diferentes.
-
-### Etapa 6 — Conclusão, avaliações e denúncias
-
-- [ ] Motorista marca a viagem como concluída.
-- [ ] Participantes criam avaliações de 1 a 5 estrelas.
-- [ ] Impedir avaliação duplicada.
-- [ ] Atualizar/exibir a média de avaliações.
-- [ ] Criar formulário de denúncia.
-- [ ] Criar a área administrativa e cadastrar um administrador manualmente.
-- [ ] Permitir ao administrador resolver denúncia e bloquear/desbloquear usuário.
-
-**Resultado esperado:** o ciclo completo da viagem e a moderação podem ser
-demonstrados.
-
-### Etapa 7 — Segurança, testes e apresentação
-
-- [ ] Escrever e testar as regras do Firestore.
-- [ ] Testar telas pequenas e grandes.
-- [ ] Testar internet lenta, campos inválidos e falha de conexão.
-- [ ] Remover dados de teste inadequados e mensagens de depuração.
-- [ ] Revisar nomes dos integrantes no README e na tela Sobre.
-- [ ] Preparar contas de passageiro, motorista e administrador para a apresentação.
-- [ ] Gerar uma versão Android ou confirmar previamente a execução no Expo Go.
-- [ ] Ensaiar uma demonstração de 5 a 10 minutos.
-
-**Resultado esperado:** versão estável, segura e pronta para avaliação.
-
-## Sugestão de divisão em dupla
-
-- **Pessoa A:** autenticação, perfil, navegação e telas administrativas.
-- **Pessoa B:** caronas, busca, reservas e avaliações.
-- **Ambas:** modelo de dados, regras do Firebase, testes, documentação e apresentação.
-
-Evitem trabalhar ao mesmo tempo no mesmo arquivo. Criem uma branch por funcionalidade
-e integrem mudanças pequenas frequentemente.
-
-## Estratégia de testes
-
-No mínimo, testar manualmente os seguintes casos:
-
-| Cenário | Resultado esperado |
-| --- | --- |
-| Cadastro com e-mail pessoal | Cadastro recusado |
-| Login com senha incorreta | Mensagem de erro compreensível |
-| Passageiro tenta publicar sem papel de motorista | Operação recusada |
-| Passageiro reserva a própria carona | Operação recusada |
-| Duas solicitações para a última vaga | Apenas uma pode ser aceita |
-| Usuário tenta editar carona de outra pessoa | Firestore recusa |
-| Avaliação antes da conclusão | Operação recusada |
-| Segunda avaliação da mesma pessoa/viagem | Operação recusada |
-| Usuário comum abre função administrativa | Acesso recusado |
-| Usuário bloqueado tenta publicar/reservar | Operação recusada |
-
-Para o teste completo, mantenha três contas separadas: motorista, passageiro e
-administrador.
-
-## Git e organização do trabalho
-
-Fluxo simples recomendado:
+Reinstale as dependências com as versões registradas no projeto:
 
 ```bash
-git checkout -b feature/login
-# faça uma alteração pequena
-git add .
-git commit -m "feat: implementa tela de login"
-git checkout main
-git merge feature/login
+npm install
+npx expo-doctor
 ```
 
-Antes de cada commit, confira se nenhum segredo será enviado:
+### Erro “operation-not-allowed”
 
-```bash
-git status
-git diff --staged
-```
+Ative o provedor **E-mail/senha** em Firebase Authentication.
 
-Nunca faça commit de `.env`, `node_modules`, arquivos de conta de serviço ou builds.
-O `.gitignore` deste projeto já cobre esses casos. Arquivos como `firestore.rules`,
-`firestore.indexes.json` e `.env.example` **devem** ser versionados.
+### Erro de permissão do Firestore
 
-## Roteiro sugerido para a apresentação
+Publique o arquivo de regras com `npx firebase-tools deploy --only firestore` e
+confirme que o projeto selecionado é `appcarona-973b6`.
 
-1. Explicar em uma frase o problema resolvido.
-2. Cadastrar ou entrar com uma conta institucional.
-3. Mostrar o perfil do motorista e publicar uma carona.
-4. Entrar como passageiro, localizar a carona e solicitar uma vaga.
-5. Voltar ao motorista e aceitar a solicitação.
-6. Mostrar a reserva confirmada e concluir a viagem.
-7. Fazer uma avaliação.
-8. Criar uma denúncia e mostrar o tratamento pela conta administrativa.
-9. Explicar brevemente o Firestore e as regras de segurança.
+### Remover dados de teste
 
-Tenha dados e contas preparados antes da apresentação, mas também saiba mostrar no
-código onde cada funcionalidade foi implementada.
+Apague os documentos desejados nas coleções do Firestore pelo Console do Firebase.
+As contas são removidas separadamente na página **Authentication > Users**.
 
-## Critério para considerar o projeto pronto
+## Licença e finalidade
 
-O projeto está pronto quando o fluxo principal funciona em dois celulares ou em um
-celular alternando contas, os dados continuam salvos após reiniciar, acessos indevidos
-são recusados pelas regras do Firebase e a equipe consegue demonstrar tudo sem editar
-o banco manualmente (exceto a atribuição inicial do administrador).
-
-## Entrega
-
-- Somente um integrante da dupla deve postar o código no Moodle.
-- Os nomes dos integrantes devem constar neste README e, se possível, na tela Sobre.
-- O trabalho deve ser apresentado ao professor na sala A202 ou no laboratório.
-- O agendamento da apresentação deve ser feito pelo e-mail informado na especificação
-  da disciplina.
-
-## Próximo passo recomendado
-
-Execute o projeto atual com `npm install` e `npx expo start`. Depois conclua apenas a
-**Etapa 1**. Quando a navegação e as telas vazias estiverem funcionando, faça um
-commit antes de iniciar a configuração do Firebase.
+Projeto acadêmico desenvolvido para fins educacionais. Antes de qualquer publicação
+ou uso real, devem ser definidos termos de uso, política de privacidade e regras para
+tratamento dos dados dos usuários.

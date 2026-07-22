@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "pratica1",
-    "slug": "snack-76bb78e1-d3cf-4e7d-8c52-6fc7d42802f3",
+    "name": "Caronas ICEA",
+    "slug": "caronas-icea",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,6 +24,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }

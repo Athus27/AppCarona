@@ -1,0 +1,113 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+
+    // Coleção exigida pela atividade: leitura na tela inicial antes do login.
+    // Não permite escrita pelo aplicativo.
+    match /Usuarios/{usuarioId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+
+      allow create: if isOwner(userId)
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.isBlocked == false
+        && request.resource.data.isAdmin == false;
+
+      allow update: if isAdmin() || (
+        isOwner(userId)
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.isAdmin == resource.data.isAdmin
+        && request.resource.data.isBlocked == resource.data.isBlocked
+      );
+
+      allow delete: if false;
+    }
+
+    match /rides/{rideId} {
+      allow read: if signedIn();
+
+      allow create: if signedIn()
+        && request.resource.data.driverId == request.auth.uid
+        && request.resource.data.status == 'open'
+        && request.resource.data.seatsTotal is int
+        && request.resource.data.seatsTotal > 0
+        && request.resource.data.seatsAvailable == request.resource.data.seatsTotal
+        && request.resource.data.price is number
+        && request.resource.data.price >= 0;
+
+      allow update: if signedIn()
+        && resource.data.driverId == request.auth.uid
+        && request.resource.data.driverId == resource.data.driverId;
+
+      allow delete: if false;
+    }
+
+    match /bookings/{bookingId} {
+      allow read: if signedIn() && (
+        resource.data.passengerId == request.auth.uid ||
+        resource.data.driverId == request.auth.uid ||
+        isAdmin()
+      );
+
+      allow create: if signedIn()
+        && request.resource.data.passengerId == request.auth.uid
+        && request.resource.data.driverId != request.auth.uid
+        && request.resource.data.status == 'pending';
+
+      allow update: if signedIn()
+        && request.resource.data.rideId == resource.data.rideId
+        && request.resource.data.driverId == resource.data.driverId
+        && request.resource.data.passengerId == resource.data.passengerId
+        && (
+          resource.data.driverId == request.auth.uid ||
+          (resource.data.passengerId == request.auth.uid && request.resource.data.status == 'cancelled') ||
+          isAdmin()
+        );
+
+      allow delete: if false;
+    }
+
+    match /reviews/{reviewId} {
+      allow read: if signedIn();
+
+      allow create: if signedIn()
+        && request.resource.data.reviewerId == request.auth.uid
+        && request.resource.data.targetId != request.auth.uid
+        && request.resource.data.rating is int
+        && request.resource.data.rating >= 1
+        && request.resource.data.rating <= 5;
+
+      allow update, delete: if false;
+    }
+
+    match /reports/{reportId} {
+      allow read: if signedIn() && (
+        resource.data.reporterId == request.auth.uid || isAdmin()
+      );
+
+      allow create: if signedIn()
+        && request.resource.data.reporterId == request.auth.uid
+        && request.resource.data.status == 'pending';
+
+      allow update: if isAdmin();
+      allow delete: if false;
+    }
+  }
+}
