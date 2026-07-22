@@ -127,10 +127,17 @@ npm install
 
 ## Configuração obrigatória do Firebase
 
-O aplicativo já está conectado ao projeto Firebase `appcarona-973b6`. A configuração
-do SDK está em `src/config/firebaseConfig.js`. A chave `apiKey` de um aplicativo
-cliente identifica o projeto e não substitui as regras de segurança; arquivos de
-conta de serviço e chaves privadas nunca devem ser adicionados ao repositório.
+O aplicativo usa variáveis de ambiente para receber a configuração pública do
+Firebase. Copie o arquivo de exemplo e preencha os valores do aplicativo Web exibidos
+em **Configurações do projeto > Seus aplicativos** no Console do Firebase:
+
+```bash
+cp .env.example .env
+```
+
+O arquivo `.env` é local e ignorado pelo Git. O `.env.example` documenta apenas os
+nomes das variáveis. Variáveis `EXPO_PUBLIC_*` são incluídas no aplicativo compilado
+e não devem receber chaves privadas ou credenciais de conta de serviço.
 
 Antes de criar a primeira conta, conclua estas etapas no Console do Firebase:
 

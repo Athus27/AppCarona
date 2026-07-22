@@ -4,7 +4,7 @@ import { ActivityIndicator, Alert, FlatList, Platform, Pressable, SafeAreaView, 
 import { StatusBar } from "expo-status-bar";
 import { collection, getDocs } from "firebase/firestore";
 
-import { db } from "./FirebaseConfig";
+import { db } from "./src/config/firebase";
 
 import { LoginScreen, RegisterScreen, WelcomeScreen } from "./src/screens/AuthScreens";
 import {

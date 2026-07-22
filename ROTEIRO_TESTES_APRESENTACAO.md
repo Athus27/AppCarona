@@ -350,7 +350,7 @@ Mostre:
 
 1. A lista **Usuários do Firestore** na tela inicial.
 2. Um documento da coleção `Usuarios` no Console do Firebase.
-3. O arquivo `FirebaseConfig.js` no editor.
+3. Os arquivos `.env.example` e `src/config/firebaseConfig.js` no editor.
 4. Destaque que não foi utilizado `getAnalytics`, pois ele não é necessário para
    essa conexão no React Native.
 
